@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    
+<div class="container-fluid">
+    <div class="text-right m-3">
+    <img src="static/img/nomina.png" alt="nomina" />
+    </div>
+    <h3 class="text-center">Gestion de Empleados Nómina</h3>
+
+
+
+<div class="row m-3">
+    <div class="col-sm-1"></div>
+
+    <!-- Contenido inicia -->
+    <div class="col-sm-10">
+<h2 >Empleados <a href="/" class="float-right"><img style="width: 40px;" src="static/img/casa.png" alt="casa" /></a></h2>
+
+{%with messages = get_flashed_messages()%}
+{%if messages%}
+{% for message in messages %}
+<div class="alert alert-success alert-dismissable" role="alert">
+<button type="button" class="close" data-dismiss="alert" aria-label="close">
+<span aria-hidden="true">&times;</span>
+</button>
+{{message}}
+</div>
+{%endfor%}
+{%endif%}
+{%endwith%}
+
+
+
+<table class="table table-hover">
+<thead>
+<tr>
+    <th scope="col">Id</th>
+    <th scope="col">Nombre</th>
+    <th scope="col">Documento Identidad</th>
+    <th scope="col">Cargo</th>
+    <th scope="col">Telefono</th>
+    <th scope="col">Email</th>
+    <th scope="col">Salario $</th>
+    <th scope="col">Acciones</th>
+</tr>
+</thead>
+<tbody>
+{% for row in usuarios %}
+<tr>
+<td>{{row.0}}</td>
+<td>{{row.1}}</td>
+<td>{{row.2}}</td>
+<td>{{row.3}}</td>
+<td>{{row.4}}</td>
+<td>{{row.5}}</td>
+<td>{{row.6}}</td>
+<td>{{row.7}}</td>
+<td>
+    <a href="/update/{{row.0}}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit{{row.0}}">Editar</a>
+    <a href="/delete/{{ row.0 }}" onclick="return confirm('¿Seguro que quieres eliminarlo?')" class="btn btn-danger btn-sm">Eliminar</a>
+
+</td>
+</tr>
+
+
+<!-- Comienzo editar empleado Modal -->
+<div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" style="align-content: center;">Editar el Empleado</h5>    
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              
+
+            <div class="modal-body">
+                
+                <form action="{{ url_for('update')}}" method="POST">
+                    <input type="hidden" name="id" value="{{row.0}}">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input value="{{row.1}}" type="text" name="nombre" class="form-control" id="exampleFormControlInput1" placeholder="Nombre">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Numero del Documento Identidad</label>
+                          <input value="{{row.2}}" type="text" name="cedula" class="form-control" id="exampleFormControlInput1" placeholder="Documento Identidad">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Cargo en la Empresa</label>
+                          <input value="{{row.3}}" type="text" name="cargo" class="form-control" id="exampleFormControlInput1" placeholder="Cargo">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Numero de Telefono</label>
+                          <input value="{{row.4}}" name="telefono" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Telefono">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Email</label>
+                          <input value="{{row.5}}" type="text" name="email" class="form-control" id="exampleFormControlInput1" placeholder="Email">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Salario $</label>
+                          <input value="{{row.6}}" name="salario" type="text" class="form-control" id="exampleFormControlInput1" placeholder="$">
+                      </div>
+
+                      <button type="submit" class="btn btn-success mb-2">Editar</button>
+                 
+                  </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Fin editar a un empleado Modal -->
+
+
+
+
+{% endfor %}
+</tbody>
+
+</table>
+    </div>
+    <!-- Contenido termina -->
+
+
+    <div class="col-sm-5"></div>
+
+</div>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>    
+</body>
+</html>
